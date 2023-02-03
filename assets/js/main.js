@@ -51,33 +51,41 @@ $(document).ready(function () {
 
             $('#city-details').append(cityName, cityTemp, cityHumid, cityWind);
 
-            // var forecastArray = result.list;
-            //     var hourInt = 0;
-            //     forecastArray.forEach(element => {
-            //         var weatherIcon = 
-            //         var weatherIconURL = "http://openweathermap.org/img/wn/10d@2x.png"
+            var forecastArray = result.list;
+            console.log(forecastArray)
 
-            //         $('#five-day-forecast').append(`<div class="card" style="width: 18rem;">
-            //             <img src="..." class="card-img-top" alt="...">
-            //                 <div class="card-body">
-            //                     <h5 class="card-title">Card title</h5>
-            //                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            //                 </div>
-            //                 <ul class="list-group list-group-flush">
-            //                     <li class="list-group-item">An item</li>
-            //                     <li class="list-group-item">A second item</li>
-            //                     <li class="list-group-item">A third item</li>
-            //                 </ul>
-            //                 <div class="card-body">
-            //                     <a href="#" class="card-link">Card link</a>
-            //                     <a href="#" class="card-link">Another link</a>
-            //                 </div>
-            //         </div>`)
+            for (let i = 0; i < forecastArray.length; i += 8) {
+                const element = forecastArray[i];
+                console.log(element)
 
 
-            //         hourInt+=8;
+                var weatherIcon = element.weather[0].icon;
+                var weatherIconAlt = element.weather[0].description;
+                var weatherIconURL = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
+                var cardDate;
+                var cardTemp;
+                var cardWind;
+                var cardHumid;
 
-            //     });
+                $('#five-day-forecast').append(`
+                <div class="col-sm-3 mb-3 mb-sm-0">
+                    <div class="card" style="width: 18rem;">
+                        <img src=${weatherIconURL} class="card-img-top" alt=${weatherIconAlt}>
+                            <div class="card-body">
+                                <h5 class="card-title">${cardDate}</h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">${cardTemp}</li>
+                                <li class="list-group-item">${cardWind}</li>
+                                <li class="list-group-item">${cardHumid}</li>
+                            </ul>
+                    </div>
+                </div>`)
+
+
+
+
+            };
 
             // console.log(result.city.coord.lat)
             // console.log(result.city.coord.lon)
