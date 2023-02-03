@@ -25,15 +25,33 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (result) {
 
+
+
+
             console.log(result)
             console.log(result.city.coord.lat)
             console.log(result.city.coord.lon)
-            let lat = result.city.coord.lat;
-            let lon = result.city.coord.lon
+            var lat = result.city.coord.lat;
+            var lon = result.city.coord.lon;
+            var fiveKey = "8c21109a373ea9296f02d6fcb26e2e52";
+
+            var fiveDayApiURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${fiveKey}`;
+
+            $.ajax({
+                url: fiveDayApiURL,
+                method: "GET"
+            }).then(function (result) {
+                console.log(result);
+                var forecastArray = result.list;
+                var hourInt = 0;
+                forecastArray.forEach(element => {
+                    hourInt++;
+                    
+                });
+
+            });
 
 
-
-            
             // for (i = 0; i < result.response.docs.length; i++) {
             //     articleNumber++;
             //     var article = $("<div>");
