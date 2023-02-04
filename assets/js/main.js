@@ -63,21 +63,21 @@ $(document).ready(function () {
                 var weatherIconAlt = element.weather[0].description;
                 var weatherIconURL = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
                 var cardDate;
-                var cardTemp;
-                var cardWind;
-                var cardHumid;
+                var cardTemp = Math.round(parseInt(element.main.temp));
+                var cardWind = element.wind.speed;
+                var cardHumid = element.main.humidity;
 
                 $('#five-day-forecast').append(`
-                <div class="col-sm-3 mb-3 mb-sm-0">
-                    <div class="card" style="width: 18rem;">
+                <div class="col">
+                    <div class="card"">
                         <img src=${weatherIconURL} class="card-img-top" alt=${weatherIconAlt}>
                             <div class="card-body">
                                 <h5 class="card-title">${cardDate}</h5>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">${cardTemp}</li>
-                                <li class="list-group-item">${cardWind}</li>
-                                <li class="list-group-item">${cardHumid}</li>
+                                <li class="list-group-item">Temp: ${cardTemp}°C</li>
+                                <li class="list-group-item">Wind: ${cardWind} km/h</li>
+                                <li class="list-group-item">Humidity: ${cardHumid}%</li>
                             </ul>
                     </div>
                 </div>`)
