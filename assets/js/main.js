@@ -32,10 +32,14 @@ $(document).ready(function () {
             var now = moment();
             var currentDate = now.format("D/M/YYYY");
 
+            var cityName = result.city.name;
+
+            const cityButton = $(`<button class="btn btn-outline-secondary save-btn" type="button" id="button-addon2">Save</button>  </div > `)
+
             // Get city name and insert to title along with today's date
-            var cityName = $("<h3>");
-            cityName.addClass("cityName");
-            cityName.text(result.city.name + ` (${currentDate})`);
+            var cityNameEl = $("<h3>");
+            cityNameEl.addClass("cityName");
+            cityNameEl.text(`${cityName} (${currentDate})`);
 
             var cityTemp = $("<p>");
             cityTemp.addClass("cityTemp");
@@ -49,7 +53,7 @@ $(document).ready(function () {
             cityWind.addClass("cityWind");
             cityWind.text("Wind Speed: " + result.list[0].wind.speed + " km/h");
 
-            $('#city-details').append(cityName, cityTemp, cityHumid, cityWind);
+            $('#city-details').append(cityNameEl, cityTemp, cityHumid, cityWind);
 
             var forecastArray = result.list;
             console.log(forecastArray)
