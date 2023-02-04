@@ -4,38 +4,38 @@ $(document).ready(function () {
 
     // var articleNumber = 0;
 
-    // $(".clear").click(function () {
-    //     articleNumber = 0;
-    //     $("#search-string").val("");
-    //     $("#article-results").empty();
-    // });    
+    $("#clear-button").click(function () {
+        articleNumber = 0;
+        $("#search-input").val("");
+        $('#city-details').empty();
+    });
 
     var apiURL = "https://api.openweathermap.org/data/2.5/forecast?";
     var key = "&mode=json&units=metric&appid=8c21109a373ea9296f02d6fcb26e2e52";
     var searchString = "";
     var queryURL;
 
-    // Function to get city coordinates
+    // Onclick function that runs when submit button is clicked
     $("#search-button").on("click", function () {
-        // $("#five-day-forecast").empty();
+        // Clear page of previously loaded info
+        $('#city-details').empty();
+        $("#five-day-forecast").empty();
+        // Get user input and insert into queryURL
         searchString = $("#search-input").val();
-        console.log(searchString)
         queryURL = apiURL + "q=" + searchString + key;
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (result) {
 
+            // Get current date and assign to variable
+            var now = moment();
+            var currentDate = now.format("D/M/YYYY");
 
-
-
-            console.log(result)
-            console.log(result.list)
-            console.log(result.list[0])
-
+            // Get city name and insert to title along with today's date
             var cityName = $("<h3>");
             cityName.addClass("cityName");
-            cityName.text(result.city.name);
+            cityName.text(result.city.name + ` (${currentDate})`);
 
             var cityTemp = $("<p>");
             cityTemp.addClass("cityTemp");
@@ -54,6 +54,8 @@ $(document).ready(function () {
             var forecastArray = result.list;
             console.log(forecastArray)
 
+            var daysToAdd = 1;
+
             for (let i = 0; i < forecastArray.length; i += 8) {
                 const element = forecastArray[i];
                 console.log(element)
@@ -62,10 +64,12 @@ $(document).ready(function () {
                 var weatherIcon = element.weather[0].icon;
                 var weatherIconAlt = element.weather[0].description;
                 var weatherIconURL = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
-                var cardDate;
+
+                var cardDate = moment().add(daysToAdd, 'days').format("D/M/YYYY");
                 var cardTemp = Math.round(parseInt(element.main.temp));
                 var cardWind = element.wind.speed;
                 var cardHumid = element.main.humidity;
+                daysToAdd++
 
                 $('#five-day-forecast').append(`
                 <div class="col">
