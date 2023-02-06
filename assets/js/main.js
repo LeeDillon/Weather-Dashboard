@@ -1,19 +1,54 @@
 $(document).ready(function () {
 
-
-
-    // var articleNumber = 0;
-
-    $("#clear-button").click(function () {
-        articleNumber = 0;
-        $("#search-input").val("");
-        $('#city-details').empty();
-    });
-
     var apiURL = "https://api.openweathermap.org/data/2.5/forecast?";
     var key = "&mode=json&units=metric&appid=8c21109a373ea9296f02d6fcb26e2e52";
     var searchString = "";
     var queryURL;
+    
+
+    // Create empty list for cities
+    var listOfSearchedCities = [];
+    // Populate the above list of previously searched cities by reading local storage
+    for (let i = 0; i < localStorage.length; i++) {
+        listOfSearchedCities.push(localStorage.getItem(localStorage.key(i)));
+    }
+
+    // Function to remove duplicates from an array
+    function removeDuplicates(array) {
+        return array.filter((item,
+            index) => array.indexOf(item) === index);
+    }
+
+    // Remove any duplicates
+    var filteredCityList = removeDuplicates(listOfSearchedCities);
+
+    // Loop through updated city list and save each value into storage and make a city button for each
+    function generateCityButtons(array) {
+        for (let i = 0; i < array.length; i++) {
+            const element = array[i];
+            localStorage.setItem(i, element);
+            var cityButtonEl = $(`<li class="nav-item">
+                                        <button class="btn btn-outline-secondary save-btn cityButton mb-3" type="button" id="button-addon2">${element}</button>
+                                     </li>`);
+            $('.buttonInsert').append(cityButtonEl);
+        }
+    }
+
+    // On page load generate buttons from localStorage
+    generateCityButtons(filteredCityList);
+
+
+    // Function attached to clear button that resets page and local storage
+    $("#clear-button").click(function () {
+        articleNumber = 0;
+        $("#search-input").val("");
+        $('#city-details').empty();
+        $('#five-day-forecast').empty();
+        $('.buttonInsert').empty();
+        localStorage.clear();
+        filteredCityList = [];
+        listOfSearchedCities = [];
+    });
 
     // Onclick function that runs when submit button is clicked
     $("#search-button").on("click", function () {
@@ -32,9 +67,21 @@ $(document).ready(function () {
             var now = moment();
             var currentDate = now.format("D/M/YYYY");
 
+            // Get city name from results
             var cityName = result.city.name;
 
-            const cityButton = $(`<button class="btn btn-outline-secondary save-btn" type="button" id="button-addon2">Save</button>  </div > `)
+            // Add the currently searched city to the list
+            listOfSearchedCities.push(cityName);
+
+            // Filter list to remove duplicates
+            var filteredCityList = removeDuplicates(listOfSearchedCities);
+
+            // Empty local storage so that new list can be inserted
+            localStorage.clear();
+
+            $('.buttonInsert').empty();
+            // When submit button is clicked update list of buttons to include new city
+            generateCityButtons(filteredCityList);
 
             // Get city name and insert to title along with today's date
             var cityNameEl = $("<h3>");
@@ -56,13 +103,13 @@ $(document).ready(function () {
             $('#city-details').append(cityNameEl, cityTemp, cityHumid, cityWind);
 
             var forecastArray = result.list;
-            console.log(forecastArray)
+            // console.log(forecastArray)
 
-            var daysToAdd = 1;
+            var daysToAdd = 0;
 
             for (let i = 0; i < forecastArray.length; i += 8) {
                 const element = forecastArray[i];
-                console.log(element)
+                // console.log(element)
 
 
                 var weatherIcon = element.weather[0].icon;
