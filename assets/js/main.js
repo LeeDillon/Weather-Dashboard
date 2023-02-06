@@ -1,10 +1,11 @@
 $(document).ready(function () {
 
+    // Variables needed for API call
     var apiURL = "https://api.openweathermap.org/data/2.5/forecast?";
     var key = "&mode=json&units=metric&appid=8c21109a373ea9296f02d6fcb26e2e52";
     var searchString = "";
     var queryURL;
-    
+
 
     // Create empty list for cities
     var listOfSearchedCities = [];
@@ -32,15 +33,21 @@ $(document).ready(function () {
                                      </li>`);
             $('.buttonInsert').append(cityButtonEl);
         }
+        // Onclick function that runs when a city button is clicked
+        $(".cityButton").on("click", function () {
+            // Use text value of button as search parameter
+            searchString = "";
+            searchString = $(this).text();
+            performSearch(searchString);
+            console.log(searchString);
+        });
     }
 
     // On page load generate buttons from localStorage
     generateCityButtons(filteredCityList);
 
-
     // Function attached to clear button that resets page and local storage
     $("#clear-button").click(function () {
-        articleNumber = 0;
         $("#search-input").val("");
         $('#city-details').empty();
         $('#five-day-forecast').empty();
@@ -52,17 +59,26 @@ $(document).ready(function () {
 
     // Onclick function that runs when submit button is clicked
     $("#search-button").on("click", function () {
+        searchString = $("#search-input").val();
+        performSearch(searchString);
+        console.log(searchString);
+    });
+
+
+
+    // Main function that runs search and populates page with results
+    function performSearch(searchString) {
         // Clear page of previously loaded info
         $('#city-details').empty();
         $("#five-day-forecast").empty();
         // Get user input and insert into queryURL
-        searchString = $("#search-input").val();
+
         queryURL = apiURL + "q=" + searchString + key;
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (result) {
-
+            console.log()
             // Get current date and assign to variable
             var now = moment();
             var currentDate = now.format("D/M/YYYY");
@@ -136,52 +152,7 @@ $(document).ready(function () {
                             </ul>
                     </div>
                 </div>`)
-
-
-
-
             };
-
-            // console.log(result.city.coord.lat)
-            // console.log(result.city.coord.lon)
-            // var lat = result.city.coord.lat;
-            // var lon = result.city.coord.lon;
-            // var fiveKey = "8c21109a373ea9296f02d6fcb26e2e52&units=metric";
-
-            // var fiveDayApiURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${fiveKey}`;
-
-            // $.ajax({
-            //     url: fiveDayApiURL,
-            //     method: "GET"
-            // }).then(function (result) {
-            //     console.log(result);
-            //     var forecastArray = result.list;
-            //     var hourInt = 0;
-            //     forecastArray.forEach(element => {
-            //         hourInt++;
-
-            //     });
-
-            // });
-
-
-            // for (i = 0; i < result.response.docs.length; i++) {
-            //     articleNumber++;
-            //     var article = $("<div>");
-            //     article.addClass("well well-lg row");
-            //     var title = $("<h3>");
-            //     title.addClass("title");
-            //     title.text(result.response.docs[i].headline.main);
-            //     var description = $("<p>");
-            //     description.addClass("description");
-            //     description.text(result.response.docs[i].abstract);
-            //     var number = $("<div class='articleNumber'>").text(articleNumber);
-            //     $(article).append(number, title, description);
-            //     $("#article-results").append(article);
-
-            // }
         });
-    });
-
-
+    };
 });
