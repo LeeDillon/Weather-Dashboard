@@ -16,6 +16,7 @@ input {
     padding-top: 20px;
 }
 
+/* Media query to change height of sidebar so that it moves above the rest of the content once the device width hits this point */
 @media only screen and (min-width: 768px) {
     .sidebar {
         min-height: calc(100vh - 50px);

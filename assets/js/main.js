@@ -71,7 +71,6 @@ $(document).ready(function () {
         // Clear page of previously loaded info
         $('#city-details').empty();
         $("#five-day-forecast").empty();
-        // Get user input and insert into queryURL
 
         queryURL = apiURL + "q=" + searchString + key;
         $.ajax({
@@ -79,7 +78,7 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (result) {
             console.log()
-            // Get current date and assign to variable
+            // Get current date and convert to desired format
             var now = moment();
             var currentDate = now.format("D/M/YYYY");
 
@@ -95,7 +94,9 @@ $(document).ready(function () {
             // Empty local storage so that new list can be inserted
             localStorage.clear();
 
+            // Delete existing buttons before making new ones
             $('.buttonInsert').empty();
+
             // When submit button is clicked update list of buttons to include new city
             generateCityButtons(filteredCityList);
 
@@ -103,41 +104,39 @@ $(document).ready(function () {
             var cityNameEl = $("<h3>");
             cityNameEl.addClass("cityName");
             cityNameEl.text(`${cityName} (${currentDate})`);
-
+            // Get city temp and insert into page
             var cityTemp = $("<p>");
             cityTemp.addClass("cityTemp");
             cityTemp.text("Current temperature: " + Math.round(parseInt(result.list[0].main.temp)) + "°C");
-
+            // Get city humidity and insert into page
             var cityHumid = $("<p>");
             cityHumid.addClass("cityHumid");
             cityHumid.text("Current humidity: " + result.list[0].main.humidity + "%");
-
+            // Get city wind speed and insert into page
             var cityWind = $("<p>");
             cityWind.addClass("cityWind");
             cityWind.text("Wind Speed: " + result.list[0].wind.speed + " km/h");
-
+            // Insert information elements into city details section
             $('#city-details').append(cityNameEl, cityTemp, cityHumid, cityWind);
-
+            // Take array for 40 forecast objects and assign to variable
             var forecastArray = result.list;
-            // console.log(forecastArray)
 
+            // Create variable for the purpose of incrementing days
             var daysToAdd = 0;
-
+            // For loop that moves forward 8 items at a time to create 5 cards out of the 40 items that give info for each day
             for (let i = 0; i < forecastArray.length; i += 8) {
                 const element = forecastArray[i];
-                // console.log(element)
-
-
+                // From each element in the array get the icon info and insert into card
                 var weatherIcon = element.weather[0].icon;
                 var weatherIconAlt = element.weather[0].description;
                 var weatherIconURL = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png"
-
+                // Format the date of each card by using days to add variable. Then get weather info to populate card
                 var cardDate = moment().add(daysToAdd, 'days').format("D/M/YYYY");
                 var cardTemp = Math.round(parseInt(element.main.temp));
                 var cardWind = element.wind.speed;
                 var cardHumid = element.main.humidity;
                 daysToAdd++
-
+                // Code to dynamically generate a forecast card and populate variables using template literals that use above variables
                 $('#five-day-forecast').append(`
                 <div class="col">
                     <div class="card mb-3">
