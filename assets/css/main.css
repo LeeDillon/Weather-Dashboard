@@ -1,0 +1,23 @@
+main {
+    background-color: rgb(84, 84, 219);
+}
+
+input {
+    width: 100%;
+}
+
+.input-group-append {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.sidebar {
+    background-color: rgba(98, 141, 234, 0.696);
+    padding-top: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+    .sidebar {
+        min-height: calc(100vh - 50px);
+    }
+}

@@ -77,7 +77,7 @@ $(document).ready(function () {
 
                 $('#five-day-forecast').append(`
                 <div class="col">
-                    <div class="card"">
+                    <div class="card mb-3">
                         <img src=${weatherIconURL} class="card-img-top" alt=${weatherIconAlt}>
                             <div class="card-body">
                                 <h5 class="card-title">${cardDate}</h5>
