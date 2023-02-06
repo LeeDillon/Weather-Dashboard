@@ -16,6 +16,15 @@ input {
     padding-top: 20px;
 }
 
+.card {
+    background-color: rgba(255, 235, 205, 0.629);
+}
+
+.cityButton {
+    background-color: rgba(255, 235, 205, 0.629);
+    color:black
+}
+
 /* Media query to change height of sidebar so that it moves above the rest of the content once the device width hits this point */
 @media only screen and (min-width: 768px) {
     .sidebar {
